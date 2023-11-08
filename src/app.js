@@ -4,6 +4,7 @@ const express = require('express')
 const morgan = require('morgan')
 const compression = require('compression')
 const helmet = require('helmet')
+const cors = require('cors')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const initRoute = require('./routes')
 
@@ -17,6 +18,7 @@ app.use(morgan('dev'))
 app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 /* 
     init routes
