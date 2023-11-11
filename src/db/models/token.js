@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            Token.belongsTo(models.User, { as: 'user', foreignKey: 'user_id' })
         }
     }
     Token.init(
