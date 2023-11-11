@@ -109,4 +109,66 @@ const createQuestion = async (req, res, next) => {
     }
 }
 
-module.exports = { createExam, createQuestion, getListExam }
+const getDetailExam = async (req, res, next) => {
+    try {
+        const { exam_id } = req.body
+        const detailExam = await db.Exam.findOne({
+            where: { id: exam_id },
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+                {
+                    model: db.Question,
+                    as: 'questions',
+                    include: [
+                        {
+                            model: db.Answer,
+                            as: 'answers',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        },
+                    ],
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                },
+            ],
+            nest: true,
+        })
+
+        if (!detailExam) {
+            throw new ErrorResponse({
+                message: 'Exam not found',
+                status: StatusCodes.NOT_FOUND,
+            })
+        }
+
+        const result = new SuccessResponse({
+            message: ReasonPhrases.OK,
+            statusCode: StatusCodes.OK,
+            metadata: { detailExam },
+        })
+        return res.status(result.status).json(result)
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+const getInfoExam = async (req, res, next) => {
+    try {
+        const { exam_id } = req.body
+        const infoExam = await db.Exam.findOne({
+            where: { id: exam_id },
+        })
+
+        const result = new SuccessResponse({ metadata: { infoExam } })
+        return res.status(result.status).json(result)
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+module.exports = {
+    createExam,
+    createQuestion,
+    getListExam,
+    getDetailExam,
+    getInfoExam,
+}
