@@ -271,7 +271,7 @@ const loginAdmin = async function (req, res, next) {
         const token = await db.Token.findOne({ where: { user_id: user.id } })
         // tạo token
         const access_token = jwt.sign({ user: user.email }, token.at_secret, {
-            expiresIn: Date.now() + 1000 * 60 * 10, // thời gian hết hạn của token: 10 phút
+            expiresIn: '10m', // thời gian hết hạn của token: 10 phút
         })
         const refresh_token = jwt.sign({ user: user.email }, token.rt_secret, {
             expiresIn: '180d', // thời gian hết hạn của token: 180 ngày

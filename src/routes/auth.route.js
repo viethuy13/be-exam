@@ -22,9 +22,13 @@ router.post('/user/register', registerUser)
 // POST :: logout user
 router.post('/user/logout', logoutUser)
 
-// POST :: login user
+// POST :: register admin
 router.post('/admin/register', registerAdmin)
+
+// POST :: login admin
 router.post('/admin/login', loginAdmin)
+
+// POST :: logout admin
 router.post('/admin/logout', logoutAdmin)
 
 module.exports = router
